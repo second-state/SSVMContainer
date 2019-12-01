@@ -1,0 +1,2 @@
+# SSVMContainer
+A Rust application that sits between incoming requests from the network and the SSVM. This application handles the deployment of Wasm applications and manages the execution of services (callable functions inside the Wasm application). The actual execution takes place inside the SSVM. The SSVM is a stack-based Virtual Machine which is stateless. This SSVMContainer application is responsible for fielding incoming deployments and service calls as well as storing application state.
