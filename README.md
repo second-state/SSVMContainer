@@ -4,7 +4,10 @@ Users on the web/network are able to deploy and execute Wasm applications on Sec
 Specifically, this SSVMContainer application handles the deployment of Wasm applications and also manages the execution of services (callable functions inside the Wasm application). The actual execution takes place inside the SSVM. However the execution is initiated by this container and all of the application state information is handled by this SSVMContainer.
 
 # Storage
+
+## File system
 At present this SSVMContainer simple uses the file system.
+![storage file system](https://github.com/second-state/SSVMContainer/blob/master/storage_file_system.jpg)
 
-
-Future versions will allow the storage to be configured for leveldb also.
+## LevelDB
+Future versions will allow the storage to be configured for LevelDB also.
