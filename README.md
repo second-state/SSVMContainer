@@ -15,4 +15,21 @@ At present this SSVMContainer simple uses the file system.
 
 ## LevelDB
 
-Future versions will allow the storage to be configured for LevelDB also.
+Future versions will allow the storage to be configured for LevelDB also. Once this transition happens, the following JSON (which reflects the above file-system layout) will be used.
+
+```
+{
+	"application_uuid": "0x11111111",
+	"application_name": "ERC 20",
+	"bytecode": "0x99999999",
+	"service": {
+		"service_uuid": "0x11111111",
+		"service_name": "add",
+		"timestamp": {
+			"timestamp_uuid": "1575158141",
+			"input": {},
+			"output": {}
+		}
+	}
+}
+```
