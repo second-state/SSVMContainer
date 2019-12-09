@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["destroy","destroy a database. You shouldn't hold a handle on the database anywhere at that time."],["repair","repair the database. The database should be closed at this moment."]]});
