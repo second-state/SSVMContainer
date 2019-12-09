@@ -11,6 +11,5 @@ license = "MIT"
 
 [dependencies]
 dirs = "2.0.2"
-leveldb = "0.8"
 serde_json = "1.0"
 uuid = { version = "0.8", features = ["v4"] }
