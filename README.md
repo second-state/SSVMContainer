@@ -37,7 +37,7 @@ Future versions will allow the storage to be configured for LevelDB also. Once t
 ## Usage
 Add this dependency to your application's Cargo.toml file
 ```
-ssvm_container = "0.1.1"
+ssvm_container = "0.1.2"
 ```
 Add this line of code to the top of your rust source code i.e. your main.rs file.
 ```
