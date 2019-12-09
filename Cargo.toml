@@ -4,10 +4,7 @@ version = "0.1.0"
 authors = ["tpmccallum <mistermac2008@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/second-state/SSVMContainer"
-readme = "https://github.com/second-state/SSVMContainer/blob/master/README.md"
 license = "MIT"
-license-file = "https://github.com/second-state/SSVMContainer/blob/master/LICENSE"
-
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
