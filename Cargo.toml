@@ -1,5 +1,6 @@
 [package]
 name = "ssvm_container"
+description = "An application that sits between the web i.e. RPC calls from SSVMRPC < https://github.com/second-state/SSVMRPC > and SSVM < https://github.com/second-state/SSVM >"
 version = "0.1.0"
 authors = ["tpmccallum <mistermac2008@gmail.com>"]
 edition = "2018"
