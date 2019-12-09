@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["create_comparator",""]],"struct":[["DefaultComparator","DefaultComparator is the a stand in for \"no comparator set\""],["OrdComparator","OrdComparator is a comparator comparing Keys that implement `Ord`"]],"trait":[["Comparator","A comparator has two important functions:"]]});

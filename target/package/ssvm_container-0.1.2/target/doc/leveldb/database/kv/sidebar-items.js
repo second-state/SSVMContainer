@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["KV","Key-Value-Access to the leveldb database, providing a basic interface."]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["FileSystem","A file object which facilitates CRUD style operations on the file system The default storage path is the calling user's home directory"]]});
