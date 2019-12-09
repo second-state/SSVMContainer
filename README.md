@@ -34,6 +34,38 @@ Future versions will allow the storage to be configured for LevelDB also. Once t
 }
 ```
 
+## Usage
+Add this dependency to your application's Cargo.toml file
+```
+ssvm_container = "0.1.1"
+```
+Add this line of code to the top of your rust source code i.e. your main.rs file.
+```
+extern crate ssvm_container;
+```
+### Instantiate a file system object
+```
+let fs = ssvm_container::storage::file_system::FileSystem::init();
+```
+### CREATE an application
+```
+let bytecode_wasm = String::from("0x1234567890");
+let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
+```
+### READ an application
+```
+let bytecode_wasm_string = ssvm_container::storage::file_system::FileSystem::read_application(&fs, &uuid);
+```
+### UPDATE an application
+```
+ssvm_container::storage::file_system::FileSystem::update_application(&fs, &uuid, &bytecode_wasm_update);
+```
+### DELETE an application
+```
+ssvm_container::storage::file_system::FileSystem::delete_application(&fs, &uuid);
+```
+
+
 # Roadmap
 
 As mentioned above, the ultimate goal of SSVMContainer is to take on IoC by design. This is a slightly longer term goal than the current working prototype. The current SSVMContainer demonstrates how to manage multiple applications and their state in a stateless execution environment. As shown in the diagram above, the SSVMContainer takes HTTP POST requests from the web via SSVMRPC, then executes code on the stateless SSVM. The SSVMContainer not only passes back the results to SSVMRPC (so that the original HTTP POST sender gets a result), SSVMContainer also records all incoming and outgoing activity and the state of any and all of the applications at any given point in time. SSVMContainer even stores each applications Wasm bytecode (which is passed into SSVM during any of the stateless execution activities).
