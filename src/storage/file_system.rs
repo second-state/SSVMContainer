@@ -1,13 +1,35 @@
 extern crate dirs;
 
+use std::io::BufWriter;
+use std::io::BufReader;
+use std::fs::File;
+
 use std::io::Read;
 use std::io::Write;
+use serde_json::json;
 
-#[derive(Debug)]
 /// A file object which facilitates CRUD style operations on the file system
 /// The default storage path is the calling user's home directory
+#[derive(Debug)]
 pub struct FileSystem {
     base_dir: String
+}
+
+// Private code that facilitates the reading and writing of a name
+fn write_name(_file_path: &std::path::PathBuf, _name: &str){
+    let value = json!({"name": &_name});
+    let mut path = std::path::PathBuf::from(_file_path);
+    path.push("name.json");
+    let writer = BufWriter::new(File::create(path).unwrap());
+    serde_json::to_writer_pretty(writer, &value).unwrap();
+}
+
+fn read_name(_file_path: &str) -> String{
+    let mut path = std::path::PathBuf::from(_file_path);
+    path.push("name.json");
+    let reader = BufReader::new(File::open(path).unwrap());
+    let name = serde_json::from_reader(reader).unwrap();
+    return name;
 }
 
 impl FileSystem {
@@ -40,13 +62,23 @@ impl FileSystem {
     /// let bytecode_wasm = String::from("0x1234567890");
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
     pub fn create_application(&self, _bytecode_wasm: &str) -> String {
+        // Create unique ID
     	let uuid = uuid::Uuid::new_v4().to_string();
+        // Initialize a path
     	let mut path = std::path::PathBuf::from(&self.base_dir);
+        // Extend the path
     	path.push(&uuid);
+        // Create uuid as dir
     	std::fs::create_dir_all(path.as_path()).unwrap();
-    	path.push("bytecode.wasm");
-    	let mut file = std::fs::File::create(path.as_path()).unwrap();
-    	file.write_all(_bytecode_wasm.as_bytes());
+        // Create name as new json file
+        write_name(&path, "placeholder");
+        // Extend path 
+        path.push("bytecode");
+        path.set_extension("wasm");
+        // Create bytecode as file
+        let mut file = std::fs::File::create(path.as_path()).unwrap();
+        file.write_all(_bytecode_wasm.as_bytes());
+        // return the uuid
     	uuid
     }
 
