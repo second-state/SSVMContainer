@@ -79,7 +79,8 @@ impl FileSystem {
         let mut file = std::fs::File::create(path.as_path()).unwrap();
         file.write_all(_bytecode_wasm.as_bytes());
         // return the uuid
-    	uuid
+    	let return_value = json!({"response":{"status": "success","application":{"uuid": uuid}}});
+        return content::Json(return_value.to_string());
     }
 
     /// # Name 
