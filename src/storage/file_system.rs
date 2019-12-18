@@ -138,10 +138,13 @@ impl FileSystem {
     /// # Example
     /// ssvm_container::storage::file_system::FileSystem::delete_application(&fs, &uuid);
     pub fn delete_application(&self, _application_uuid: &str) -> String {
-    	let mut path = std::path::PathBuf::from(&self.base_dir);
-    	path.push(&_application_uuid);
+        let mut path = std::path::PathBuf::from(&self.base_dir);
+        // Extend the path
+        path.push(&_application_uuid);
+        println!("Deleting path at: {:?}", path.as_path());
     	std::fs::remove_dir_all(path.as_path()).unwrap();
-    	_application_uuid.to_string()
-
+    	let return_value = json!({"response":{"status": "success","application":{"storage": "file_system", "uuid": _application_uuid}}});
+        let return_value_as_string = serde_json::to_string(&return_value);
+        return return_value_as_string.unwrap();
     }
 }
