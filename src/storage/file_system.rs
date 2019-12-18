@@ -7,6 +7,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 use serde_json::json;
+//use serde::{Deserialize, Serialize};
 
 /// A file object which facilitates CRUD style operations on the file system
 /// The default storage path is the calling user's home directory
@@ -80,7 +81,8 @@ impl FileSystem {
         file.write_all(_bytecode_wasm.as_bytes());
         // return the uuid
     	let return_value = json!({"response":{"status": "success","application":{"uuid": uuid}}});
-        return content::Json(return_value.to_string());
+        let return_value_as_string = serde_json::to_string(&return_value);
+        return return_value_as_string.unwrap();
     }
 
     /// # Name 
