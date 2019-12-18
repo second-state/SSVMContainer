@@ -80,7 +80,7 @@ impl FileSystem {
         let mut file = std::fs::File::create(path.as_path()).unwrap();
         file.write_all(_bytecode_wasm.as_bytes());
         // return the uuid
-    	let return_value = json!({"response":{"status": "success","application":{"uuid": uuid}}});
+    	let return_value = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
     }
