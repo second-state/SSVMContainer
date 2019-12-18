@@ -7,7 +7,8 @@ fn main() {
 
     // Example of how to create an application
     let bytecode_wasm = String::from("0x1234567890");
-    let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
+    let application_name = String::from("Application 1");
+    let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm, &application_name);
     println!("Application has a uuid of: {:?}", uuid);
 
     // Example of how to read an application 

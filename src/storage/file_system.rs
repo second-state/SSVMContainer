@@ -62,7 +62,7 @@ impl FileSystem {
     /// # Example
     /// let bytecode_wasm = String::from("0x1234567890");
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn create_application(&self, _bytecode_wasm: &str) -> String {
+    pub fn create_application(&self, _bytecode_wasm: &str, _application_name: &str) -> String {
         // Create unique ID
     	let uuid = uuid::Uuid::new_v4().to_string();
         // Initialize a path
@@ -72,7 +72,7 @@ impl FileSystem {
         // Create uuid as dir
     	std::fs::create_dir_all(path.as_path()).unwrap();
         // Create name as new json file
-        write_name(&path, "placeholder");
+        write_name(&path, _application_name);
         // Extend path 
         path.push("bytecode");
         path.set_extension("wasm");
