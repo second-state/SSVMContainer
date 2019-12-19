@@ -106,17 +106,14 @@ impl FileSystem {
         let mut path = std::path::PathBuf::from(&self.base_dir);
         // Extend the path
         path.push(&uuid);
-        // Create uuid as dir
-        std::fs::create_dir_all(path.as_path()).unwrap();
-        // Create name as new json file
-        write_name(&path, _application_name);
-        // Extend path 
-        path.push("bytecode");
-        path.set_extension("wasm");
-        // Create bytecode as file
-        let mut file = std::fs::File::create(path.as_path()).unwrap();
-        file.write_all(_bytecode_wasm.as_bytes());
-        // return the uuid
+        // Access uuid as dir
+        // 
+        // Read bytecode
+        //
+        // Call SSVM directly
+        //
+        // Return SSVM output
+
         let return_value = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
