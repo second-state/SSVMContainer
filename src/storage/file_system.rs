@@ -86,6 +86,42 @@ impl FileSystem {
     }
 
     /// # Name 
+    /// execute_wasm_function
+    /// # Purpose
+    /// Allow calling code to pass in the name of a function and its arguments so that it can be executed on SSVM, and the result returned
+    /// # Input
+    /// An instance of the FileSystem object
+    /// The uuid of an existing application (wasm code that was deployed using this file's create_application function)
+    /// The name of the function to be executed
+    /// The arguments for the function
+    /// Any modules that are required i.e. any special implementations of multimedia, graphics, file system which are supported on the SSVM
+    /// # Returns
+    /// The output from the SSVM
+    /// Also stores
+    /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
+    pub fn execute_wasm_function(&self, _bytecode_wasm: &str, _application_name: &str) -> String {
+        // Create unique ID
+        let uuid = uuid::Uuid::new_v4().to_string();
+        // Initialize a path
+        let mut path = std::path::PathBuf::from(&self.base_dir);
+        // Extend the path
+        path.push(&uuid);
+        // Create uuid as dir
+        std::fs::create_dir_all(path.as_path()).unwrap();
+        // Create name as new json file
+        write_name(&path, _application_name);
+        // Extend path 
+        path.push("bytecode");
+        path.set_extension("wasm");
+        // Create bytecode as file
+        let mut file = std::fs::File::create(path.as_path()).unwrap();
+        file.write_all(_bytecode_wasm.as_bytes());
+        // return the uuid
+        let return_value = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
+        let return_value_as_string = serde_json::to_string(&return_value);
+        return return_value_as_string.unwrap();
+    }
+    /// # Name 
     /// read_application
     /// # Purpose
     /// Read the Wasm of a given application
