@@ -8,8 +8,7 @@ use std::io::Read;
 use std::io::Write;
 use serde_json::json;
 use serde_json::Value;
-//use serde::{Deserialize, Serialize};
-
+use std::time::SystemTime;
 /// A file object which facilitates CRUD style operations on the file system
 /// The default storage path is the calling user's home directory
 #[derive(Debug)]
@@ -32,6 +31,12 @@ fn read_name(_file_path: &str) -> String{
     let reader = BufReader::new(File::open(path).unwrap());
     let name = serde_json::from_reader(reader).unwrap();
     return name;
+}
+
+fn create_timestamp_dir(){
+    let sys_time = SystemTime::now();
+    println!("System time: {:?}", sys_time);
+
 }
 
 impl FileSystem {
@@ -111,6 +116,8 @@ impl FileSystem {
         println!("Function name: {:?}", _function_name);
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
+        // Get time
+        &self.create_timestamp_dir();
         // Build the SSVM command as a string
         
         // result = ssvm_command, function_name, function_arguments, modules, bytecode
