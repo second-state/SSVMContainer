@@ -33,12 +33,6 @@ fn read_name(_file_path: &str) -> String{
     return name;
 }
 
-fn create_timestamp_dir(){
-    let sys_time = SystemTime::now();
-    println!("System time: {:?}", sys_time);
-
-}
-
 impl FileSystem {
     /// # Name 
     /// init
@@ -54,6 +48,12 @@ impl FileSystem {
     	let home_dir = dirs::home_dir();
     	let home_dir_string: String = home_dir.unwrap().to_str().unwrap().into();
         FileSystem{base_dir: home_dir_string}
+    }
+    
+    fn create_timestamp_dir(){
+        let sys_time = SystemTime::now();
+        println!("System time: {:?}", sys_time);
+
     }
 
     /// # Name 
