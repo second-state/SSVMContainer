@@ -87,6 +87,47 @@ impl FileSystem {
     }
 
     /// # Name 
+    /// execute_ewasm_function
+    /// # Purpose - Execute Ethereum flavoured WebAssembly (Wasm) on SSVM
+    /// Allow calling code to pass in the name of an Ethereum (Ewasm) function and its arguments so that it can be executed on SSVM, and the result returned
+    /// # Input
+    /// An instance of the FileSystem object
+    /// The uuid of an existing application (wasm code that was deployed using this file's create_application function)
+    /// The name of the function to be executed
+    /// The arguments for the function
+    /// Any modules that are required i.e. any special implementations of multimedia, graphics, file system which are supported on the SSVM
+    /// # Returns
+    /// The output from the SSVM
+    /// Also stores
+    /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
+    pub fn execute_ewasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &Value, _modules: &Value) -> String {
+        // Initialize a path
+        let mut path = std::path::PathBuf::from(&self.base_dir);
+        // Extend the path
+        path.push(&_uuid);
+        // Read in the available bytecode
+        let bytecode_string = &self.read_application(&_uuid);
+        println!("Application bytecode: {:?}", bytecode_string);
+        println!("Function name: {:?}", _function_name);
+        println!("Function arguments: {:?}", _function_arguments);
+        println!("Modules: {:?}", _modules);
+        // Build the SSVM command as a string
+        
+        // result = ssvm_command, function_name, function_arguments, modules, bytecode
+        //
+        // Then call SSVM directly
+        //
+        // Return SSVM output
+        //
+        // Create fresh time stamp dir in this uuid dir then write input we used to input.json and the output we received to output.json
+
+        let return_value = json!({"response":{"status": "success","application":{"uuid": _uuid}}});
+        let return_value_as_string = serde_json::to_string(&return_value);
+        return return_value_as_string.unwrap();
+    }
+
+
+    /// # Name 
     /// execute_wasm_function
     /// # Purpose
     /// Allow calling code to pass in the name of a function and its arguments so that it can be executed on SSVM, and the result returned
@@ -111,10 +152,8 @@ impl FileSystem {
         println!("Function name: {:?}", _function_name);
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
-        // Access uuid as dir and pick up the bytecode on behalf of SSVM
-        // 
-        // Prepare function name and arguments however SSVM wants to receive them (i.e. loop through array of args and modules & layout flat if cmd) 
-        //
+        // Build the SSVM command as a string
+
         // result = ssvm_command, function_name, function_arguments, modules, bytecode
         //
         // Then call SSVM directly
