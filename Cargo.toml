@@ -11,5 +11,5 @@ license = "MIT"
 
 [dependencies]
 dirs = "2.0.2"
-serde_json = "1.0"
+serde_json = { git = "https://github.com/serde-rs/json" }
 uuid = { version = "0.8", features = ["v4"] }
