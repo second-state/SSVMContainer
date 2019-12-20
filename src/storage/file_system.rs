@@ -7,6 +7,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 use serde_json::json;
+use serde_json::Value;
 //use serde::{Deserialize, Serialize};
 
 /// A file object which facilitates CRUD style operations on the file system
@@ -99,7 +100,7 @@ impl FileSystem {
     /// The output from the SSVM
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &mut Vec<String>, _modules: &mut Vec<String>) -> String {
+    pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &mut Value, _modules: &mut Value) -> String {
         // Initialize a path
         let mut path = std::path::PathBuf::from(&self.base_dir);
         // Extend the path
@@ -107,6 +108,9 @@ impl FileSystem {
         // Read in the available bytecode
         let bytecode_string = &self.read_application(&_uuid);
         println!("Application bytecode: {:?}", bytecode_string);
+        println!("Function name: {:?}", _function_arguments);
+        println!("Function arguments: {:?}", bytecode_string);
+        println!("Modules: {:?}", _modules);
         // Access uuid as dir and pick up the bytecode on behalf of SSVM
         // 
         // Prepare function name and arguments however SSVM wants to receive them (i.e. loop through array of args and modules & layout flat if cmd) 
