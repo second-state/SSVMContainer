@@ -108,8 +108,8 @@ impl FileSystem {
         // Read in the available bytecode
         let bytecode_string = &self.read_application(&_uuid);
         println!("Application bytecode: {:?}", bytecode_string);
-        println!("Function name: {:?}", _function_arguments);
-        println!("Function arguments: {:?}", bytecode_string);
+        println!("Function name: {:?}", _function_name);
+        println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
         // Access uuid as dir and pick up the bytecode on behalf of SSVM
         // 
