@@ -99,13 +99,14 @@ impl FileSystem {
     /// The output from the SSVM
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, function_arguments: ?, _modules: ?) -> String {
-        // Create unique ID
-        let uuid = uuid::Uuid::new_v4().to_string();
+    pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &mut Vec<String>, _modules: &mut Vec<String>) -> String {
         // Initialize a path
         let mut path = std::path::PathBuf::from(&self.base_dir);
         // Extend the path
-        path.push(&uuid);
+        path.push(&_uuid);
+        // Read in the available bytecode
+        let bytecode_string = &self.read_application(&_uuid);
+        println!("Application bytecode: {:?}", bytecode_string);
         // Access uuid as dir and pick up the bytecode on behalf of SSVM
         // 
         // Prepare function name and arguments however SSVM wants to receive them (i.e. loop through array of args and modules & layout flat if cmd) 
@@ -118,7 +119,7 @@ impl FileSystem {
         //
         // Create fresh time stamp dir in this uuid dir then write input we used to input.json and the output we received to output.json
 
-        let return_value = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
+        let return_value = json!({"response":{"status": "success","application":{"uuid": _uuid}}});
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
     }
