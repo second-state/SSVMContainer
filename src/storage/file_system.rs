@@ -192,11 +192,11 @@ impl FileSystem {
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
-        let writer = BufWriter::new(File::create(input_json_path_as_string).unwrap());
+        let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
-        ssvm_command = format!("ssvm --input_file={} --output_file={} --bytecode_file={}", input_json_path_as_string, output_json_path_as_string, bytecode_path_as_string);
+        ssvm_command = format!("ssvm --input_file={} --output_file={} --bytecode_file={}", input_json_path_as_string, output_json_path, bytecode_path);
         println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         //
