@@ -50,7 +50,7 @@ impl FileSystem {
         FileSystem{base_dir: home_dir_string}
     }
     
-    fn create_timestamp_dir(&self) -> str {
+    fn create_timestamp_dir(&self) -> String {
         let sys_time = SystemTime::now();
         println!("System time: {:?}", sys_time);
 
