@@ -196,7 +196,7 @@ impl FileSystem {
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
-        ssvm_command = format!("ssvm --input_file={} --output_file={} --bytecode_file={}", input_json_path, output_json_path, bytecode_path);
+        ssvm_command = format!("ssvm --input_file={} --output_file={} --bytecode_file={}", input_json_path.to_str(), output_json_path.to_str(), bytecode_path.to_str());
         println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         //
