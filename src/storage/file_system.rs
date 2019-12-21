@@ -50,7 +50,7 @@ impl FileSystem {
         FileSystem{base_dir: home_dir_string}
     }
     
-    fn create_timestamp_dir(&self) -> String {
+    fn create_timestamp_dir(&self) {
         let sys_time = SystemTime::now();
         println!("System time: {:?}", sys_time);
 
@@ -58,7 +58,7 @@ impl FileSystem {
         //timestamp_path.push(&sys_time);
         // Create uuid as dir
         //std::fs::create_dir_all(timestamp_path.as_path()).unwrap();
-        timestamp_path.as_path()
+        //timestamp_path.as_path()
     }
 
     /// # Name 
@@ -164,6 +164,8 @@ impl FileSystem {
         println!("Function name: {:?}", _function_name);
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
+
+        &self.create_timestamp_dir();
         // Build the SSVM command as a string
 
         // result = ssvm_command, function_name, function_arguments, modules, bytecode
