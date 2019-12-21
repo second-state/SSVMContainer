@@ -175,7 +175,7 @@ impl FileSystem {
         let mut file = std::fs::File::create(path.as_path()).unwrap();
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
-        service_name = format!("{}{}{}", _uuid, timestamp_value, _function_name, if isLast { "" } else { "_" });
+        service_name = format!("{}{}{}", _uuid, timestamp_value, _function_name);
         let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": "TODO","execution": {"function_name": _function_name,"argument": "TODO","storage": {}}});
         // Convert the input json object to a string for writing to the file
         let input_json_as_string = serde_json::to_string(&input_json);
