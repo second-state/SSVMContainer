@@ -182,7 +182,8 @@ impl FileSystem {
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
-        //file.write_all(_TODO_JSON);
+        let writer = BufWriter::new(File::create(path).unwrap());
+        serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         //
         // Then call SSVM directly
