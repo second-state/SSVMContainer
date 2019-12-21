@@ -160,19 +160,23 @@ impl FileSystem {
         println!("Function name: {:?}", _function_name);
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
+        // Create timestamp directory (this is where ssvm reads the input.json and then saves the output.json)
         let timestamp_value = &self.get_time_in_seconds();
         path.push(&timestamp_value);
         std::fs::create_dir_all(path.as_path()).unwrap();
-        // Build the SSVM command as a string
+        // Create the actual input.json as required by https://github.com/second-state/SSVMRPC/blob/master/documentation/specifications/ssvmrpc_service_specification.md#execution-of-non-blockchain-wasm-ie-rust
+        // Create the input.json file (so that ssvm can execute based on the information inside input.json)
+        path.push("input");
+        path.set_extension("json");
+        let mut file = std::fs::File::create(path.as_path()).unwrap();
+        //file.write_all(_TODO_JSON);
 
-        // result = ssvm_command, function_name, function_arguments, modules, bytecode
+        // Build the SSVM command as a string
         //
         // Then call SSVM directly
         //
         // Return SSVM output
         //
-        // Create fresh time stamp dir in this uuid dir then write input we used to input.json and the output we received to output.json
-
         let return_value = json!({"response":{"status": "success","application":{"uuid": _uuid}}});
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
