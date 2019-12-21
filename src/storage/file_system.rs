@@ -1,4 +1,5 @@
 extern crate dirs;
+extern crate rand;
 
 use std::io::BufWriter;
 use std::io::BufReader;
@@ -71,7 +72,10 @@ impl FileSystem {
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
     pub fn create_application(&self, _bytecode_wasm: &str, _application_name: &str) -> String {
         // Create unique ID
-    	let uuid = uuid::Uuid::new_v4().to_string();
+    	//let uuid = uuid::Uuid::new_v4().to_string();
+        let y: u64 = rand::random::<u64>();
+        let p = String::from("0x");
+        let uuid: String = format!("{}{:x}", p, y);
         // Initialize a path
     	let mut path = std::path::PathBuf::from(&self.base_dir);
         // Extend the path
@@ -169,8 +173,11 @@ impl FileSystem {
         path.push("input");
         path.set_extension("json");
         let mut file = std::fs::File::create(path.as_path()).unwrap();
-        //file.write_all(_TODO_JSON);
-
+        // Create the contents for the input json file
+        let input_json = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
+        let return_value_as_string = serde_json::to_string(&return_value);
+        // Write the contents to the input json file
+//file.write_all(_TODO_JSON);
         // Build the SSVM command as a string
         //
         // Then call SSVM directly
