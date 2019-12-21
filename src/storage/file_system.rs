@@ -174,8 +174,8 @@ impl FileSystem {
         path.set_extension("json");
         let mut file = std::fs::File::create(path.as_path()).unwrap();
         // Create the contents for the input json file
-        let input_json = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
-        let return_value_as_string = serde_json::to_string(&return_value);
+        let input_json = json!({"response":{"status": "success","application":{"uuid": _uuid, "name": _function_name}}});
+        let input_json_as_string = serde_json::to_string(&input_json);
         // Write the contents to the input json file
 //file.write_all(_TODO_JSON);
         // Build the SSVM command as a string
