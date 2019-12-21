@@ -55,10 +55,10 @@ impl FileSystem {
         println!("System time: {:?}", sys_time);
 
         let mut timestamp_path = std::path::PathBuf::from(&self.base_dir);
-        path.push(&sys_time);
+        timestamp_path.push(&sys_time);
         // Create uuid as dir
         std::fs::create_dir_all(timestamp_path.as_path()).unwrap();
-        timestamp_path.as_path().unwrap()
+        timestamp_path.as_path()
     }
 
     /// # Name 
@@ -122,7 +122,7 @@ impl FileSystem {
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
         // Get time
-        &self.create_timestamp_dir(&self);
+        &self.create_timestamp_dir();
         // Build the SSVM command as a string
         
         // result = ssvm_command, function_name, function_arguments, modules, bytecode
