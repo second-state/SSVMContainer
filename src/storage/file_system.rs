@@ -160,7 +160,7 @@ impl FileSystem {
         bytecode_path.push(&_uuid);
         bytecode_path.push("bytecode");
         bytecode_path.set_extension("wasm");
-        let bytecode_path_as_string = String::from(bytecode_path.as_path()).unwrap());
+        let bytecode_path_as_string = String::from(bytecode_path.as_path()).unwrap();
         println!("Bytecode path: {:?}" bytecode_path_as_string);
 
         // Input json path
@@ -171,7 +171,7 @@ impl FileSystem {
         std::fs::create_dir_all(input_json_path.as_path()).unwrap();
         input_json_path.push("input");
         input_json_path.set_extension("json");
-        let input_json_path_as_string = String::from(input_json_path.as_path()).unwrap());
+        let input_json_path_as_string = String::from(input_json_path.as_path()).unwrap();
         println!("Input json path: {:?}" input_json_path_as_string);
 
         // Output json path
@@ -180,7 +180,7 @@ impl FileSystem {
         output_json_path.push(timestamp_value);
         output_json_path.push("output");
         output_json_path.set_extension("json");
-        let output_json_path_as_string = String::from(output_json_path.as_path()).unwrap());
+        let output_json_path_as_string = String::from(output_json_path.as_path()).unwrap();
         println!("Output json path: {:?}" output_json_path_as_string);
 
         // Create the contents for the input json file
