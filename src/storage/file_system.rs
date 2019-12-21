@@ -188,11 +188,15 @@ impl FileSystem {
         //
         // Then call SSVM directly
         //
-        // Return SSVM output
-        //
-        let return_value = json!({"response":{"status": "success","application":{"uuid": _uuid}}});
-        let return_value_as_string = serde_json::to_string(&return_value);
-        return return_value_as_string.unwrap();
+        // Read SSVM output.json file
+        let mut output_path = std::path::PathBuf::from(&self.base_dir);
+        output_path.push(&_uuid);
+        output_path.push(&timestamp_value);
+        output_path.push("output.json");
+        let output_reader = BufReader::new(File::open(output_path).unwrap());
+        let return_value = serde_json::from_reader(output_reader).unwrap();
+        // Return results
+        return return_value;
     }
     /// # Name 
     /// read_application
