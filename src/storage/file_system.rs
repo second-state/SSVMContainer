@@ -161,7 +161,7 @@ impl FileSystem {
         bytecode_path.push("bytecode");
         bytecode_path.set_extension("wasm");
         let bytecode_path_as_string = String::from(bytecode_path.as_path()).unwrap();
-        println!("Bytecode path: {:?}" bytecode_path_as_string);
+        println!("Bytecode path: {:?}", bytecode_path_as_string);
 
         // Input json path
         let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
@@ -172,7 +172,7 @@ impl FileSystem {
         input_json_path.push("input");
         input_json_path.set_extension("json");
         let input_json_path_as_string = String::from(input_json_path.as_path()).unwrap();
-        println!("Input json path: {:?}" input_json_path_as_string);
+        println!("Input json path: {:?}", input_json_path_as_string);
 
         // Output json path
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
@@ -181,7 +181,7 @@ impl FileSystem {
         output_json_path.push("output");
         output_json_path.set_extension("json");
         let output_json_path_as_string = String::from(output_json_path.as_path()).unwrap();
-        println!("Output json path: {:?}" output_json_path_as_string);
+        println!("Output json path: {:?}", output_json_path_as_string);
 
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
