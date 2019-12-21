@@ -179,6 +179,7 @@ impl FileSystem {
         let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": "TODO","execution": {"function_name": _function_name,"argument": "TODO","storage": {}}});
         // Convert the input json object to a string for writing to the file
         let input_json_as_string = serde_json::to_string(&input_json);
+        println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
         //file.write_all(_TODO_JSON);
         // Build the SSVM command as a string
