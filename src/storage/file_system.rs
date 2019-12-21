@@ -156,7 +156,7 @@ impl FileSystem {
     pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &Value, _modules: &Value) -> String {
         let timestamp_value = &self.get_time_in_seconds();
         // Bytecode path
-        let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
+        let bytecode_path = std::path::PathBuf::from(&self.base_dir);
         bytecode_path.push(&_uuid);
         bytecode_path.push("bytecode");
         bytecode_path.set_extension("wasm");
@@ -164,7 +164,7 @@ impl FileSystem {
         println!("Bytecode path: {:?}", bytecode_path);
 
         // Input json path
-        let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
+        let input_json_path = std::path::PathBuf::from(&self.base_dir);
         input_json_path.push(&_uuid);
         input_json_path.push(timestamp_value);
         // Create time stamp directory
@@ -175,7 +175,7 @@ impl FileSystem {
         println!("Input json path: {:?}", input_json_path);
 
         // Output json path
-        let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
+        let output_json_path = std::path::PathBuf::from(&self.base_dir);
         output_json_path.push(&_uuid);
         output_json_path.push(timestamp_value);
         output_json_path.push("output");
