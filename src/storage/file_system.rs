@@ -171,8 +171,8 @@ impl FileSystem {
         std::fs::create_dir_all(input_json_path.as_path()).unwrap();
         input_json_path.push("input");
         input_json_path.set_extension("json");
-        let input_json_path_as_string = String::from(input_json_path.as_path());
-        println!("Input json path: {:?}", input_json_path_as_string);
+        //let input_json_path_as_string = String::from(input_json_path.as_path());
+        println!("Input json path: {:?}", input_json_path);
 
         // Output json path
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
@@ -180,8 +180,8 @@ impl FileSystem {
         output_json_path.push(timestamp_value);
         output_json_path.push("output");
         output_json_path.set_extension("json");
-        let output_json_path_as_string = String::from(output_json_path.as_path());
-        println!("Output json path: {:?}", output_json_path_as_string);
+        //let output_json_path_as_string = String::from(output_json_path.as_path());
+        println!("Output json path: {:?}", output_json_path);
 
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
