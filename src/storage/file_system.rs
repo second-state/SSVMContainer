@@ -50,7 +50,13 @@ impl FileSystem {
         FileSystem{base_dir: home_dir_string}
     }
     
-    fn create_timestamp_dir(&self) {
+    fn get_time_in_seconds(&self) -> String{
+        match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH){
+            Ok(n) => return n.as_secs().to_string(),
+            Err(_) => panic!("Error"),
+        }
+    }
+
         let sys_time = SystemTime::now();
         println!("System time: {:?}", sys_time);
 
@@ -164,8 +170,9 @@ impl FileSystem {
         println!("Function name: {:?}", _function_name);
         println!("Function arguments: {:?}", _function_arguments);
         println!("Modules: {:?}", _modules);
-
-        &self.create_timestamp_dir();
+        let timestamp_value = &self.get_time_in_seconds();
+        path.push(&timestamp_value);
+        std::fs::create_dir_all(path.as_path()).unwrap();
         // Build the SSVM command as a string
 
         // result = ssvm_command, function_name, function_arguments, modules, bytecode
