@@ -160,7 +160,7 @@ impl FileSystem {
         bytecode_path.push(&_uuid);
         bytecode_path.push("bytecode");
         bytecode_path.set_extension("wasm");
-        let bytecode_path_as_string = String::from(bytecode_path.as_path());
+        let bytecode_path_as_string = String::from(bytecode_path.as_path().unwrap());
         println!("Bytecode path: {:?}", bytecode_path_as_string);
 
         // Input json path
