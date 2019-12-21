@@ -50,7 +50,7 @@ impl FileSystem {
         FileSystem{base_dir: home_dir_string}
     }
     
-    fn get_time_in_seconds(&self) -> String{
+    pub fn get_time_in_seconds(&self) -> String{
         match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH){
             Ok(n) => return n.as_secs().to_string(),
             Err(_) => panic!("Error"),
