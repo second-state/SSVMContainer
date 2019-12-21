@@ -154,25 +154,35 @@ impl FileSystem {
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
     pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &Value, _modules: &Value) -> String {
-        // Initialize a path
-        let mut path = std::path::PathBuf::from(&self.base_dir);
-        // Extend the path
-        path.push(&_uuid);
-        // Read in the available bytecode
-        let bytecode_string = &self.read_application(&_uuid);
-        println!("Application bytecode: {:?}", bytecode_string);
-        println!("Function name: {:?}", _function_name);
-        println!("Function arguments: {:?}", _function_arguments);
-        println!("Modules: {:?}", _modules);
-        // Create timestamp directory (this is where ssvm reads the input.json and then saves the output.json)
         let timestamp_value = &self.get_time_in_seconds();
-        path.push(&timestamp_value);
-        std::fs::create_dir_all(path.as_path()).unwrap();
-        // Create the actual input.json as required by https://github.com/second-state/SSVMRPC/blob/master/documentation/specifications/ssvmrpc_service_specification.md#execution-of-non-blockchain-wasm-ie-rust
-        // Create the input.json file (so that ssvm can execute based on the information inside input.json)
-        path.push("input");
-        path.set_extension("json");
-        let mut file = std::fs::File::create(path.as_path()).unwrap();
+        // Bytecode path
+        let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
+        bytecode_path.push(&_uuid);
+        bytecode_path.push("bytecode");
+        bytecode_path.set_extension("wasm");
+        let bytecode_path_as_string = String::from(bytecode_path.as_path()).unwrap());
+        println!("Bytecode path: {:?}" bytecode_path_as_string);
+
+        // Input json path
+        let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
+        input_json_path.push(&_uuid);
+        input_json_path.push(timestamp_value);
+        // Create time stamp directory
+        std::fs::create_dir_all(input_json_path.as_path()).unwrap();
+        input_json_path.push("input");
+        input_json_path.set_extension("json");
+        let input_json_path_as_string = String::from(input_json_path.as_path()).unwrap());
+        println!("Input json path: {:?}" input_json_path_as_string);
+
+        // Output json path
+        let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
+        output_json_path.push(&_uuid);
+        output_json_path.push(timestamp_value);
+        output_json_path.push("output");
+        output_json_path.set_extension("json");
+        let output_json_path_as_string = String::from(output_json_path.as_path()).unwrap());
+        println!("Output json path: {:?}" output_json_path_as_string);
+
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
@@ -182,10 +192,12 @@ impl FileSystem {
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
-        let writer = BufWriter::new(File::create(path).unwrap());
+        let writer = BufWriter::new(File::create(input_json_path_as_string).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
-        //
+        let mut ssvm_command: String = String::from("");
+        ssvm_command = format!("ssvm --input_file={} --output_file={} --bytecode_file={}", input_json_path_as_string, output_json_path_as_string, bytecode_path_as_string);
+        println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         //
         // Read SSVM output.json file
