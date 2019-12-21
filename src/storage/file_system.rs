@@ -58,7 +58,7 @@ impl FileSystem {
         path.push(&sys_time);
         // Create uuid as dir
         std::fs::create_dir_all(timestamp_path.as_path()).unwrap();
-        timestamp_path.as_path()).unwrap()
+        timestamp_path.as_path().unwrap()
     }
 
     /// # Name 
