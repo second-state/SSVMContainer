@@ -55,9 +55,9 @@ impl FileSystem {
         println!("System time: {:?}", sys_time);
 
         let mut timestamp_path = std::path::PathBuf::from(&self.base_dir);
-        timestamp_path.push(&sys_time);
+        //timestamp_path.push(&sys_time);
         // Create uuid as dir
-        std::fs::create_dir_all(timestamp_path.as_path()).unwrap();
+        //std::fs::create_dir_all(timestamp_path.as_path()).unwrap();
         timestamp_path.as_path()
     }
 
