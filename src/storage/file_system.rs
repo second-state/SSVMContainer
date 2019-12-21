@@ -178,6 +178,7 @@ impl FileSystem {
         service_name = format!("{}{}{}", _uuid, timestamp_value, _function_name);
         let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": "TODO","execution": {"function_name": _function_name,"argument": "TODO","storage": {}}});
         // Convert the input json object to a string for writing to the file
+        println!("Input json object: {:?}", input_json);
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
