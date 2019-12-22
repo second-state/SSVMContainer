@@ -196,8 +196,9 @@ impl FileSystem {
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
-        ssvm_command = format!("ssvm --input_file={:?} --output_file={:?} --bytecode_file={:?}", input_json_path, output_json_path, bytecode_path);
-        println!("ssvm command: {:?}", ssvm_command);
+        // Might have to set the execution directory at ~/SSVM/build/ssvm-proxy and then run the ./ssvm-proxy command - Waiting for SSVM GitHub to be udpated with new code. Then I will updated local SSVM and rebuild.
+        //ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", input_json_path, output_json_path, bytecode_path);
+        //println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         //
         // Read SSVM output.json file
