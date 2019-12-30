@@ -14,3 +14,4 @@ dirs = "2.0.2"
 serde_json = { git = "https://github.com/serde-rs/json" }
 uuid = { version = "0.8", features = ["v4"] }
 rand = "0.7.2"
+wat = { git = "https://github.com/bytecodealliance/wat" }

@@ -163,6 +163,16 @@ impl FileSystem {
         //let bytecode_path_as_string = String::from(bytecode_path);
         println!("Bytecode path: {:?}", bytecode_path);
 
+        // WAT path
+        let mut wat_path = std::path::PathBuf::from(&self.base_dir);
+        wat_path.push(&_uuid);
+        wat_path.push("wat");
+        wat_path.set_extension("wat");
+        //let bytecode_path_as_string = String::from(bytecode_path);
+        println!("WAT path: {:?}", wat_path);
+        let binary = wat::parse_file(wat_path);
+        println!("{:?}", binary);
+
         // Input json path
         let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
         input_json_path.push(&_uuid);
