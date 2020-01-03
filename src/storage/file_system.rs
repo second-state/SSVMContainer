@@ -1,5 +1,6 @@
 extern crate dirs;
 extern crate rand;
+use std::path::Path;
 
 use std::io::BufWriter;
 use std::io::BufReader;
