@@ -196,20 +196,17 @@ impl FileSystem {
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
-        // Might have to set the execution directory at ~/SSVM/build/ssvm-proxy and then run the ./ssvm-proxy command - Waiting for SSVM GitHub to be udpated with new code. Then I will updated local SSVM and rebuild.
+        // Create ssvm command 
         //ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", input_json_path, output_json_path, bytecode_path);
         //println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
-        //
+        // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
         // Read SSVM output.json file
-        let mut output_path = std::path::PathBuf::from(&self.base_dir);
-        output_path.push(&_uuid);
-        output_path.push(&timestamp_value);
-        output_path.push("output.json");
-        let output_reader = BufReader::new(File::open(output_path).unwrap());
-        let return_value = serde_json::from_reader(output_reader).unwrap();
+        //let output_reader = BufReader::new(File::open(output_json_path).unwrap());
+        //let return_value = serde_json::from_reader(output_reader).unwrap();
         // Return results
-        return return_value;
+        //return return_value;
+        return "Placeholder while we get ssvm executing and writing output.json";
     }
     /// # Name 
     /// read_application
