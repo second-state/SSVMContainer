@@ -206,7 +206,8 @@ impl FileSystem {
         //let return_value = serde_json::from_reader(output_reader).unwrap();
         // Return results
         //return return_value;
-        return "Placeholder while we get ssvm executing and writing output.json";
+        let return_value: String = String::from("Placeholder while we get ssvm executing and writing output.json");
+        return return_value;
     }
     /// # Name 
     /// read_application
