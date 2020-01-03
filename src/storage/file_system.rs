@@ -192,12 +192,13 @@ impl FileSystem {
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
+        let ijp: &Path = &input_json_path;
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
         // Create ssvm command 
-        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", &input_json_path.as_path(), &output_json_path.as_path(), &bytecode_path.as_path());
+        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp.as_path(), output_json_path.as_path(), bytecode_path.as_path());
         println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
