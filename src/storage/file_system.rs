@@ -153,7 +153,7 @@ impl FileSystem {
     /// The output from the SSVM
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn execute_wasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &Value, _modules: &Value) -> String {
+    pub fn execute_wasm_function(&self, _uuid: &str, _modules: &Value, _function_name: &str, _function_arguments: &Value, _argument_types: &Value, _return_type: &str) -> String {
         let timestamp_value = &self.get_time_in_seconds();
         // Bytecode path
         let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
@@ -162,16 +162,6 @@ impl FileSystem {
         bytecode_path.set_extension("wasm");
         //let bytecode_path_as_string = String::from(bytecode_path);
         println!("Bytecode path: {:?}", bytecode_path);
-
-        // WAT path
-        let mut wat_path = std::path::PathBuf::from(&self.base_dir);
-        wat_path.push(&_uuid);
-        wat_path.push("wat");
-        wat_path.set_extension("wat");
-        //let bytecode_path_as_string = String::from(bytecode_path);
-        println!("WAT path: {:?}", wat_path);
-        let binary = wat::parse_file(wat_path);
-        println!("{:?}", binary);
 
         // Input json path
         let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
@@ -196,7 +186,7 @@ impl FileSystem {
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
-        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments,"storage": {}}});
+        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_type": _return_type});
         // Convert the input json object to a string for writing to the file
         println!("Input json object: {:?}", input_json);
         let input_json_as_string = serde_json::to_string(&input_json);
