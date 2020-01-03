@@ -110,7 +110,7 @@ impl FileSystem {
     /// The output from the SSVM
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn execute_ewasm_function(&self, _uuid: &str, _function_name: &str, _function_arguments: &Value, _modules: &Value) -> String {
+    pub fn execute_ewasm_function(&self, _uuid: &str,  _modules: &Value, _function_name: &str, _function_arguments: &Value) -> String {
         // Initialize a path
         let mut path = std::path::PathBuf::from(&self.base_dir);
         // Extend the path
