@@ -197,8 +197,8 @@ impl FileSystem {
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
         // Create ssvm command 
-        //ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", input_json_path, output_json_path, bytecode_path);
-        //println!("ssvm command: {:?}", ssvm_command);
+        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", input_json_path, output_json_path, bytecode_path);
+        println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
         // Read SSVM output.json file
