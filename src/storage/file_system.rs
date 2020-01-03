@@ -161,6 +161,7 @@ impl FileSystem {
         bytecode_path.push(&_uuid);
         bytecode_path.push("bytecode");
         bytecode_path.set_extension("wasm");
+        let bp = bytecode_path.clone();
         //let bytecode_path_as_string = String::from(bytecode_path);
         println!("Bytecode path: {:?}", bytecode_path);
 
@@ -181,6 +182,7 @@ impl FileSystem {
         output_json_path.push(timestamp_value);
         output_json_path.push("output");
         output_json_path.set_extension("json");
+        let ojp = output_json_path.clone();
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
 
@@ -193,13 +195,14 @@ impl FileSystem {
         let input_json_as_string = serde_json::to_string(&input_json);
         println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
-        let ijp: &Path = &input_json_path;
+        let ijp = input_json_path.clone();
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
         let mut ssvm_command: String = String::from("");
         // Create ssvm command 
-        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp.as_path(), output_json_path.as_path(), bytecode_path.as_path());
+        ssvm_command = format!("ssvm-proxy --input_file={:?}", ijp);
+        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp, ojp.as_path(), bp.as_path());
         println!("ssvm command: {:?}", ssvm_command);
         // Then call SSVM directly
         // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
