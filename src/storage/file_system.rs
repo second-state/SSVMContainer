@@ -190,7 +190,6 @@ impl FileSystem {
         let bp = bytecode_path.clone();
         //let bytecode_path_as_string = String::from(bytecode_path);
         println!("Bytecode path: {:?}", bytecode_path);
-
         // Input json path
         let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
         input_json_path.push(&_uuid);
@@ -201,7 +200,6 @@ impl FileSystem {
         input_json_path.set_extension("json");
         //let input_json_path_as_string = String::from(input_json_path.as_path());
         println!("Input json path: {:?}", input_json_path);
-
         // Output json path
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
         output_json_path.push(&_uuid);
@@ -212,26 +210,19 @@ impl FileSystem {
         let ojp2 = output_json_path.clone();
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
-
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
         let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_type": _return_type}});
         // Convert the input json object to a string for writing to the file
-        println!("Input json object: {:?}", input_json);
         let input_json_as_string = serde_json::to_string(&input_json);
-        //println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
         let ijp = input_json_path.clone();
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the command as a Command object and call SSVM directly
         Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string().into_string().unwrap()).arg("--output_file").arg(ojp.into_os_string().into_string().unwrap()).arg("--bytecode_file").arg(bp.into_os_string().into_string().unwrap()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
-        // Print the results of the command
-        //println!("Command: {:?}", output);
-        //println!("status: {}", output.status);
-        //io::stdout().write_all(&output.stdout).unwrap();
-        //io::stderr().write_all(&output.stderr).unwrap();
+        println!("SSVM command has been executed, please wait ...");
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
             let output_file_handle = File::open(output_json_path);
