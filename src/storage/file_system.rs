@@ -3,7 +3,7 @@ extern crate rand;
 use std::path::Path;
 
 use std::process::Command;
-use std::io::{self, Write};
+//use std::io::{self, Write};
 
 use std::io::BufWriter;
 use std::io::BufReader;
