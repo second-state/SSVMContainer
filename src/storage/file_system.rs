@@ -208,7 +208,7 @@ impl FileSystem {
         //ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp, ojp.as_path(), bp.as_path());
         //println!("ssvm command: {:?}", ssvm_command);
         // Build the command as a Command object
-        let output = Command::new("ssvm-proxy").arg("--input_file").arg("ijp").arg("--output_file").arg("ojp").arg("--bytecode_file").arg("bp").spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
+        let output = Command::new("ssvm-proxy").arg("--input_file").arg("ijp").arg("--output_file").arg("ojp").arg("--bytecode_file").arg("bp").output().expect("Please ensure that ssvm-proxy is in your system PATH");
         println!("status: {}", output.status);
         io::stdout().write_all(&output.stdout).unwrap();
         io::stderr().write_all(&output.stderr).unwrap();
