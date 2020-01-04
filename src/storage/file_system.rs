@@ -40,6 +40,26 @@ fn read_name(_file_path: &str) -> String{
     return name;
 }
 
+fn does_file_exist(_file_path: &str) -> bool{
+    let output_json_path = std::path::PathBuf::from(_file_path);
+    let mut retry_count: i32 = 0;
+    let mut the_response: bool = false;
+    let mut done: bool = false;
+    while !done{
+        retry_count = retry_count + 1;
+        if output_json_path.exists(){
+            the_response = true;
+            done = true;
+        } else if retry_count >=30{
+            the_response = false;
+            done = true;
+        }
+        thread::sleep(time::Duration::from_millis(250));
+        println!("Checking to see if file exists");
+    }
+        return the_response;
+}
+
 impl FileSystem {
     /// # Name 
     /// init
@@ -63,6 +83,7 @@ impl FileSystem {
             Err(_) => panic!("Error"),
         }
     }
+
 
     /// # Name 
     /// create_application
@@ -188,6 +209,7 @@ impl FileSystem {
         output_json_path.push("output");
         output_json_path.set_extension("json");
         let ojp = output_json_path.clone();
+        let ojp2 = output_json_path.clone();
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
 
@@ -203,20 +225,23 @@ impl FileSystem {
         let ijp = input_json_path.clone();
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
-        // Build the command as a Command object
-        let output = Command::new("ssvm-proxy").arg("--input_file").arg("ijp").arg("--output_file").arg("ojp").arg("--bytecode_file").arg("bp").output().expect("Please ensure that ssvm-proxy is in your system PATH");
-        // Sleep for a couple of seconds, just to ensure that SSVM has created the output.json file
-        thread::sleep(time::Duration::from_millis(2000));
+        // Build the command as a Command object and call SSVM directly
+        let output = Command::new("ssvm-proxy").arg("--input_file").arg(ijp).arg("--output_file").arg(ojp).arg("--bytecode_file").arg(bp).output().expect("Please ensure that ssvm-proxy is in your system PATH");
+        // Print the results of the command
         println!("status: {}", output.status);
         io::stdout().write_all(&output.stdout).unwrap();
         io::stderr().write_all(&output.stderr).unwrap();
-        // Then call SSVM directly
-        // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
-        // Read SSVM output.json file
-        let output_reader = BufReader::new(File::open(output_json_path).unwrap());
-        let return_value = serde_json::from_reader(output_reader).unwrap();
-        // Return results
-        return return_value;
+        // Check to see if output has been written
+        if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
+            let output_file_handle = File::open(output_json_path);
+            let output_reader = BufReader::new(output_file_handle.unwrap());
+            let return_value = serde_json::from_reader(output_reader).unwrap();
+            // Return results
+            return return_value;
+        } else {
+            let error_string: String = String::from("Output file does not exist.");
+            return error_string;
+        }
     }
     /// # Name 
     /// read_application
