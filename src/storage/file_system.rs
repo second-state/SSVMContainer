@@ -226,7 +226,7 @@ impl FileSystem {
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the command as a Command object and call SSVM directly
-        let output = Command::new("ssvm-proxy").arg("--input_file").arg(ijp).arg("--output_file").arg(ojp).arg("--bytecode_file").arg(bp).output().expect("Please ensure that ssvm-proxy is in your system PATH");
+        let output = Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string().into_string().unwrap()).arg("--output_file").arg(ojp.into_os_string().into_string().unwrap()).arg("--bytecode_file").arg(bp.into_os_string().into_string().unwrap()).output().expect("Please ensure that ssvm-proxy is in your system PATH");
         // Print the results of the command
         println!("Command: {:?}", output);
         println!("status: {}", output.status);
