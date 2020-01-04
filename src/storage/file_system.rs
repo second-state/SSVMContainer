@@ -220,7 +220,7 @@ impl FileSystem {
         // Convert the input json object to a string for writing to the file
         println!("Input json object: {:?}", input_json);
         let input_json_as_string = serde_json::to_string(&input_json);
-        println!("Input json file as string: {:?}", input_json_as_string);
+        //println!("Input json file as string: {:?}", input_json_as_string);
         // Write the contents to the input json file
         let ijp = input_json_path.clone();
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
