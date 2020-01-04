@@ -2,6 +2,8 @@ extern crate dirs;
 extern crate rand;
 use std::path::Path;
 
+use std::process::Command;
+
 use std::io::BufWriter;
 use std::io::BufReader;
 use std::fs::File;
@@ -199,11 +201,13 @@ impl FileSystem {
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the SSVM command as a string
-        let mut ssvm_command: String = String::from("");
+        //let mut ssvm_command: String = String::from("");
         // Create ssvm command 
-        ssvm_command = format!("ssvm-proxy --input_file={:?}", ijp);
-        ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp, ojp.as_path(), bp.as_path());
-        println!("ssvm command: {:?}", ssvm_command);
+        //ssvm_command = format!("ssvm-proxy --input_file={:?}", ijp);
+        //ssvm_command = format!("ssvm-proxy --input_file={:?} --output_file={:?} --bytecode_file={:?}", ijp, ojp.as_path(), bp.as_path());
+        //println!("ssvm command: {:?}", ssvm_command);
+        // Build the command as a Command object
+        Command::new("ssvm-proxy").arg("--input_file").arg("ijp").arg("--output_file").arg("ojp").arg("--bytecode_file").arg("bp").spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
         // Then call SSVM directly
         // Add some sort of wait and timeout here so that we can give ssvm a while to create the output.json file
         // Read SSVM output.json file
