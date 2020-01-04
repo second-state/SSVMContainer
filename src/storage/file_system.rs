@@ -228,6 +228,7 @@ impl FileSystem {
         // Build the command as a Command object and call SSVM directly
         let output = Command::new("ssvm-proxy").arg("--input_file").arg(ijp).arg("--output_file").arg(ojp).arg("--bytecode_file").arg(bp).output().expect("Please ensure that ssvm-proxy is in your system PATH");
         // Print the results of the command
+        println!("Command: {}", output);
         println!("status: {}", output.status);
         io::stdout().write_all(&output.stdout).unwrap();
         io::stderr().write_all(&output.stderr).unwrap();
