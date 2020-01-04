@@ -50,7 +50,7 @@ fn does_file_exist(_file_path: &str) -> bool{
         if output_json_path.exists(){
             the_response = true;
             done = true;
-        } else if retry_count >=30{
+        } else if retry_count >=40{
             the_response = false;
             done = true;
         }
