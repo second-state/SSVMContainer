@@ -55,7 +55,7 @@ fn does_file_exist(_file_path: &str) -> bool{
             done = true;
         }
         thread::sleep(time::Duration::from_millis(250));
-        println!("Checking to see if file exists");
+        println!("Checking to see if file called: {:?} exists", &_file_path);
     }
         return the_response;
 }
