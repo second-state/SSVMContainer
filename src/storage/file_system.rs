@@ -74,7 +74,9 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             //println!("Most recent timestamp directory is: {:?}", entries[position_of_last_element]);
             // Open and read the VMSnapshot section of the output.json file
             //let mut snapshot_file_path: std::path::PathBuf = &entries[entries.len()-1];
+            println!("before");
             let snapshot_file_path_string = &entries[entries.len()-1];
+            println!("after");
             //.into_os_string().into_string().unwrap();
             println!("{:?}", snapshot_file_path_string);
             /*
