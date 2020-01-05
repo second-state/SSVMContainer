@@ -1,15 +1,17 @@
 extern crate dirs;
 extern crate rand;
-use std::path::Path;
 
 use std::{thread, time};
 
 use std::process::Command;
 use std::io::{self};
 
+use std::fs;
+use std::fs::File;
 use std::io::BufWriter;
 use std::io::BufReader;
-use std::fs::File;
+
+
 
 use std::io::Read;
 use std::io::Write;
@@ -59,6 +61,41 @@ fn does_file_exist(_file_path: &str) -> bool{
     }
         return the_response;
 }
+
+fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
+        let mut return_string: String = String::from("");
+        // Obtain the current VMSnapshot, if one exists
+        let mut entries = fs::read_dir(_output_dir)?
+        .map(|res| res.map(|e| e.path()))
+        .collect::<Result<Vec<_>, io::Error>>()?;
+        if entries.len() > 0 {
+            entries.sort();
+            //let file_path_string: String = String::from(entries[entries.len()-1].into_os_string().into_string().unwrap());
+            //println!("Most recent timestamp directory is: {:?}", entries[position_of_last_element]);
+            // Open and read the VMSnapshot section of the output.json file
+            //let mut snapshot_file_path: std::path::PathBuf = &entries[entries.len()-1];
+            let snapshot_file_path_string = &entries[entries.len()-1];
+            //.into_os_string().into_string().unwrap();
+            println!("{:?}", snapshot_file_path_string);
+            /*
+            let mut snapshot_file_path = std::path::PathBuf::from(&snapshot_file_path_string); 
+            snapshot_file_path.push("output");
+            snapshot_file_path.set_extension("json");
+            let snapshot_file_handle = File::open(snapshot_file_path);
+            let output_reader = BufReader::new(snapshot_file_handle.unwrap());
+            let whole_json: Value = serde_json::from_reader(output_reader).unwrap();
+            */
+            // TODO Extract the vm_snapshop JSON only
+            // TODO Save that JSON as a return_string
+        } else {
+            // Create a blank VMSnapshot return string
+            let blank_json_return_string = json!({"vm_snapshot": {},"return_value": []});
+            return_string = serde_json::to_string(&blank_json_return_string).unwrap();
+        } 
+        // Perform the return
+        Ok(return_string)
+
+        }
 
 impl FileSystem {
     /// # Name 
@@ -122,7 +159,7 @@ impl FileSystem {
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
     }
-
+    /*
     /// # Name 
     /// execute_ewasm_function
     /// # Purpose - Execute Ethereum flavoured WebAssembly (Wasm) on SSVM
@@ -164,8 +201,8 @@ impl FileSystem {
         let return_value_as_string = serde_json::to_string(&return_value);
         return return_value_as_string.unwrap();
     }
-
-
+    */
+    
     /// # Name 
     /// execute_wasm_function
     /// # Purpose
@@ -208,12 +245,15 @@ impl FileSystem {
         output_json_path.set_extension("json");
         let ojp = output_json_path.clone();
         let ojp2 = output_json_path.clone();
+        let ojp3 = output_json_path.clone();
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
+        // Obtain the current VMSnapshot from the current timestamp dir (if one exists)
+        let current_vm_snapshot = get_current_vmsnapshot(output_json_path.into_os_string().into_string().unwrap());
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
-        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_type": _return_type}});
+        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_type": _return_type, "vm_snapshot": current_vm_snapshot.unwrap()}});
         // Convert the input json object to a string for writing to the file
         let input_json_as_string = serde_json::to_string(&input_json);
         // Write the contents to the input json file
@@ -225,7 +265,7 @@ impl FileSystem {
         println!("SSVM command has been executed, please wait ...");
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
-            let output_file_handle = File::open(output_json_path);
+            let output_file_handle = File::open(&ojp3);
             let output_reader = BufReader::new(output_file_handle.unwrap());
             let return_value = serde_json::from_reader(output_reader).unwrap();
             // Return results
