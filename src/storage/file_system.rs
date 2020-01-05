@@ -217,7 +217,7 @@ impl FileSystem {
     /// The output from the SSVM
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
-    pub fn execute_wasm_function(&self, _uuid: &str, _modules: &Value, _function_name: &str, _function_arguments: &Value, _argument_types: &Value, _return_type: &str) -> String {
+    pub fn execute_wasm_function(&self, _uuid: &str, _modules: &Value, _function_name: &str, _function_arguments: &Value, _argument_types: &Value, _return_types: &Value) -> String {
         let timestamp_value = &self.get_time_in_seconds();
         // Bytecode path
         let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
