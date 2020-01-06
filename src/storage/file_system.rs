@@ -71,8 +71,10 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>, io::Error>>()?;
         if entries.len() > 0 {
+            println!("Sorting timestamp dirs");
             entries.sort();
             for x in entries.len()-1..0 {
+                println!("Processing dir at position {:?}", x);
                 if entries[x].is_dir(){
                     let tsv = entries[x].clone();
                     let file_path_string: String = String::from(tsv.into_os_string().into_string().unwrap());
