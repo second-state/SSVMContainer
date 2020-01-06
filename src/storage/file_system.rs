@@ -88,6 +88,10 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                         let snapshot_file_handle = File::open(snapshot_file_path);
                         let output_reader = BufReader::new(snapshot_file_handle.unwrap());
                         json_return_value = serde_json::from_reader(output_reader).unwrap();
+                        let vm_snapshot = &json_return_value["result"]["vm_snapshot"];
+                        println!("vm_snapshot: {:?}", vm_snapshot);
+                        let return_value = &json_return_value["result"]["return_value"];
+                        println!("return_value: {:?}", return_value);
                         println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
