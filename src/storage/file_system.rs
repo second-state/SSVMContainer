@@ -244,6 +244,7 @@ impl FileSystem {
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
         output_json_path.push(&_uuid);
         output_json_path.push(timestamp_value);
+        let output_directory = output_json_path.clone();
         output_json_path.push("output");
         output_json_path.set_extension("json");
         let ojp = output_json_path.clone();
@@ -252,7 +253,7 @@ impl FileSystem {
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
         // Obtain the current VMSnapshot from the current timestamp dir (if one exists)
-        let current_vm_snapshot = get_current_vmsnapshot(output_json_path.into_os_string().into_string().unwrap());
+        let current_vm_snapshot = get_current_vmsnapshot(output_directory.into_os_string().into_string().unwrap());
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
