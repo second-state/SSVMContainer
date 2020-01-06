@@ -245,7 +245,7 @@ impl FileSystem {
 
         // Obtain the current VMSnapshot from the current timestamp dir (if one exists)
         let current_vm_snapshot = get_current_vmsnapshot(output_directory.into_os_string().into_string().unwrap());
-        
+        println!{"Current vm_snapshot: {:?}", current_vm_snapshot};
 
         // Bytecode path
         let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
