@@ -75,7 +75,7 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             entries.sort();
             for x in (0..entries.len()).rev() {
                 println!("Processing dir at position {:?}", x);
-                if entries[x].is_dir(){
+                if entries[x].is_dir() {
                     let tsv = entries[x].clone();
                     let file_path_string: String = String::from(tsv.into_os_string().into_string().unwrap());
                     println!("Most recent timestamp directory is: {:?}", file_path_string);
@@ -92,7 +92,10 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
                     }
+                } else {
+                    println!("Skipping this entry because it is not a directory ...");
                 }
+                break;
             }
         } 
         // Perform the return
