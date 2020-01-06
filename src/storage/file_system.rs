@@ -237,8 +237,8 @@ impl FileSystem {
         // Output json path
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
         output_json_path.push(&_uuid);
-        output_json_path.push(timestamp_value);
         let output_directory = output_json_path.clone();
+        output_json_path.push(timestamp_value);
         output_json_path.push("output");
         output_json_path.set_extension("json");
         let ojp = output_json_path.clone();
