@@ -91,11 +91,12 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                         println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
+                    break;
                     }
                 } else {
                     println!("Skipping this entry because it is not a directory ...");
                 }
-                break;
+
             }
         } 
         // Perform the return
