@@ -73,7 +73,7 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         if entries.len() > 0 {
             println!("Sorting timestamp dirs");
             entries.sort();
-            for x in entries.len()-1..0 {
+            for x in (0..entries.len()).rev() {
                 println!("Processing dir at position {:?}", x);
                 if entries[x].is_dir(){
                     let tsv = entries[x].clone();
