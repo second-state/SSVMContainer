@@ -63,7 +63,8 @@ fn does_file_exist(_file_path: &str) -> bool{
 }
 
 fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
-        let mut return_string: String = String::from("");
+        // This blank vm_snapshot will be returned if a real/current one is not located during this function's operation
+        let mut json_return_value: Value = json!({"vm_snapshot": {},"return_value": []});
         // Obtain the current VMSnapshot, if one exists
         println!("Scanning output directory at {:?} for latest vm_snapshot ...", _output_dir);
         let mut entries = fs::read_dir(_output_dir)?
@@ -78,19 +79,18 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             let mut snapshot_file_path = std::path::PathBuf::from(&file_path_string); 
             snapshot_file_path.push("output");
             snapshot_file_path.set_extension("json");
-            let snapshot_file_handle = File::open(snapshot_file_path);
-            let output_reader = BufReader::new(snapshot_file_handle.unwrap());
-            let whole_json: Value = serde_json::from_reader(output_reader).unwrap();
-            println!("{:?}", serde_json::to_string(&whole_json).unwrap());
-            // TODO Extract the vm_snapshop JSON only
-            // TODO Save that JSON as a return_string
-        } else {
-            // Create a blank VMSnapshot return string
-            let blank_json_return_string = json!({"vm_snapshot": {},"return_value": []});
-            return_string = serde_json::to_string(&blank_json_return_string).unwrap();
+            // If there is a output.json file with vm_snapshot data it will make up the return value of this function
+            if snapshot_file_path.exists(){
+                let snapshot_file_handle = File::open(snapshot_file_path);
+                let output_reader = BufReader::new(snapshot_file_handle.unwrap());
+                json_return_value = serde_json::from_reader(output_reader).unwrap();
+                println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
+                // TODO Extract the vm_snapshop JSON only
+                // TODO Save that JSON as a return_string
+            }
         } 
         // Perform the return
-        Ok(return_string)
+        Ok(serde_json::to_string(&json_return_value).unwrap())
 
         }
 
@@ -215,25 +215,10 @@ impl FileSystem {
     /// Also stores
     /// let uuid = ssvm_container::storage::file_system::FileSystem::create_application(&fs, &bytecode_wasm);
     pub fn execute_wasm_function(&self, _uuid: &str, _modules: &Value, _function_name: &str, _function_arguments: &Value, _argument_types: &Value, _return_types: &Value) -> String {
+        // New timestamp
         let timestamp_value = &self.get_time_in_seconds();
-        // Bytecode path
-        let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
-        bytecode_path.push(&_uuid);
-        bytecode_path.push("bytecode");
-        bytecode_path.set_extension("wasm");
-        let bp = bytecode_path.clone();
-        //let bytecode_path_as_string = String::from(bytecode_path);
-        println!("Bytecode path: {:?}", bytecode_path);
-        // Input json path
-        let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
-        input_json_path.push(&_uuid);
-        input_json_path.push(timestamp_value);
-        // Create time stamp directory
-        std::fs::create_dir_all(input_json_path.as_path()).unwrap();
-        input_json_path.push("input");
-        input_json_path.set_extension("json");
-        //let input_json_path_as_string = String::from(input_json_path.as_path());
-        println!("Input json path: {:?}", input_json_path);
+        
+
         // Output json path
         let mut output_json_path = std::path::PathBuf::from(&self.base_dir);
         output_json_path.push(&_uuid);
@@ -246,8 +231,33 @@ impl FileSystem {
         let ojp3 = output_json_path.clone();
         //let output_json_path_as_string = String::from(output_json_path.as_path());
         println!("Output json path: {:?}", output_json_path);
+        
+
         // Obtain the current VMSnapshot from the current timestamp dir (if one exists)
         let current_vm_snapshot = get_current_vmsnapshot(output_directory.into_os_string().into_string().unwrap());
+        
+
+        // Bytecode path
+        let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
+        bytecode_path.push(&_uuid);
+        bytecode_path.push("bytecode");
+        bytecode_path.set_extension("wasm");
+        let bp = bytecode_path.clone();
+        //let bytecode_path_as_string = String::from(bytecode_path);
+        println!("Bytecode path: {:?}", bytecode_path);
+        
+
+        // Input json path
+        let mut input_json_path = std::path::PathBuf::from(&self.base_dir);
+        input_json_path.push(&_uuid);
+        input_json_path.push(timestamp_value);
+        // Create time stamp directory
+        std::fs::create_dir_all(input_json_path.as_path()).unwrap();
+        input_json_path.push("input");
+        input_json_path.set_extension("json");
+        //let input_json_path_as_string = String::from(input_json_path.as_path());
+        println!("Input json path: {:?}", input_json_path);
+
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
@@ -258,9 +268,13 @@ impl FileSystem {
         let ijp = input_json_path.clone();
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
+        
+
         // Build the command as a Command object and call SSVM directly
         Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string()).arg("--output_file").arg(ojp.into_os_string()).arg("--bytecode_file").arg(bp.into_os_string()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
         println!("SSVM command has been executed, please wait ...");
+        
+
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
             let output_file_handle = File::open(&ojp3);
