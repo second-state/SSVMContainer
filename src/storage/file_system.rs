@@ -65,6 +65,7 @@ fn does_file_exist(_file_path: &str) -> bool{
 fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         let mut return_string: String = String::from("");
         // Obtain the current VMSnapshot, if one exists
+        println!("Scanning output directories for latest vm_snapshot");
         let mut entries = fs::read_dir(_output_dir)?
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>, io::Error>>()?;
@@ -263,8 +264,8 @@ impl FileSystem {
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         // Build the command as a Command object and call SSVM directly
-        Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string()).arg("--output_file").arg(ojp.into_os_string()).arg("--bytecode_file").arg(bp.into_os_string()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
-        println!("SSVM command has been executed, please wait ...");
+        //Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string()).arg("--output_file").arg(ojp.into_os_string()).arg("--bytecode_file").arg(bp.into_os_string()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
+        //println!("SSVM command has been executed, please wait ...");
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
             let output_file_handle = File::open(&ojp3);
