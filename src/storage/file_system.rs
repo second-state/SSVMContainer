@@ -65,7 +65,7 @@ fn does_file_exist(_file_path: &str) -> bool{
 fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         let mut return_string: String = String::from("");
         // Obtain the current VMSnapshot, if one exists
-        println!("Scanning output directory at {:?} for latest vm_snapshot", _output_dir);
+        println!("Scanning output directory at {:?} for latest vm_snapshot ...", _output_dir);
         let mut entries = fs::read_dir(_output_dir)?
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>, io::Error>>()?;
@@ -75,20 +75,13 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             let file_path_string: String = String::from(tsv.into_os_string().into_string().unwrap());
             println!("Most recent timestamp directory is: {:?}", file_path_string);
             // Open and read the VMSnapshot section of the output.json file
-            //let mut snapshot_file_path: std::path::PathBuf = &entries[entries.len()-1];
-            println!("before");
-            let snapshot_file_path_string = &entries[entries.len()-1];
-            println!("after");
-            //.into_os_string().into_string().unwrap();
-            println!("{:?}", snapshot_file_path_string);
-            /*
-            let mut snapshot_file_path = std::path::PathBuf::from(&snapshot_file_path_string); 
+            let mut snapshot_file_path = std::path::PathBuf::from(&file_path_string); 
             snapshot_file_path.push("output");
             snapshot_file_path.set_extension("json");
             let snapshot_file_handle = File::open(snapshot_file_path);
             let output_reader = BufReader::new(snapshot_file_handle.unwrap());
             let whole_json: Value = serde_json::from_reader(output_reader).unwrap();
-            */
+            println!("{:?}", serde_json::to_string(&whole_json).unwrap());
             // TODO Extract the vm_snapshop JSON only
             // TODO Save that JSON as a return_string
         } else {
