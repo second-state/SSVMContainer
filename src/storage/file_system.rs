@@ -72,27 +72,30 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         .collect::<Result<Vec<_>, io::Error>>()?;
         if entries.len() > 0 {
             entries.sort();
-            let tsv = entries[entries.len()-1].clone();
-            let file_path_string: String = String::from(tsv.into_os_string().into_string().unwrap());
-            println!("Most recent timestamp directory is: {:?}", file_path_string);
-            // Open and read the VMSnapshot section of the output.json file
-            let mut snapshot_file_path = std::path::PathBuf::from(&file_path_string); 
-            snapshot_file_path.push("output");
-            snapshot_file_path.set_extension("json");
-            // If there is a output.json file with vm_snapshot data it will make up the return value of this function
-            if snapshot_file_path.exists(){
-                let snapshot_file_handle = File::open(snapshot_file_path);
-                let output_reader = BufReader::new(snapshot_file_handle.unwrap());
-                json_return_value = serde_json::from_reader(output_reader).unwrap();
-                println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
-                // TODO Extract the vm_snapshop JSON only
-                // TODO Save that JSON as a return_string
+            for x in entries.len()-1..0 {
+                if entries[x].is_dir(){
+                    let tsv = entries[x].clone();
+                    let file_path_string: String = String::from(tsv.into_os_string().into_string().unwrap());
+                    println!("Most recent timestamp directory is: {:?}", file_path_string);
+                    // Open and read the VMSnapshot section of the output.json file
+                    let mut snapshot_file_path = std::path::PathBuf::from(&file_path_string); 
+                    snapshot_file_path.push("output");
+                    snapshot_file_path.set_extension("json");
+                // If there is a output.json file with vm_snapshot data it will make up the return value of this function
+                    if snapshot_file_path.exists(){
+                        let snapshot_file_handle = File::open(snapshot_file_path);
+                        let output_reader = BufReader::new(snapshot_file_handle.unwrap());
+                        json_return_value = serde_json::from_reader(output_reader).unwrap();
+                        println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
+                    // TODO Extract the vm_snapshop JSON only
+                    // TODO Save that JSON as a return_string
+                    }
+                }
             }
         } 
         // Perform the return
         Ok(serde_json::to_string(&json_return_value).unwrap())
-
-        }
+}
 
 impl FileSystem {
     /// # Name 
