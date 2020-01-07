@@ -64,7 +64,7 @@ fn does_file_exist(_file_path: &str) -> bool{
 
 fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
         // This blank vm_snapshot will be returned if a real/current one is not located during this function's operation
-        let mut json_return_value: Value = json!({"vm_snapshot": {},"return_value": []});
+        let mut json_return_value: Value = json!({"vm_snapshot": {}});
         // Obtain the current VMSnapshot, if one exists
         println!("Scanning output directory at {:?} for latest vm_snapshot ...", _output_dir);
         let mut entries = fs::read_dir(_output_dir)?
@@ -87,11 +87,9 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                     if snapshot_file_path.exists(){
                         let snapshot_file_handle = File::open(snapshot_file_path);
                         let output_reader = BufReader::new(snapshot_file_handle.unwrap());
-                        json_return_value = serde_json::from_reader(output_reader).unwrap();
-                        let vm_snapshot = &json_return_value["result"]["vm_snapshot"];
-                        println!("vm_snapshot: {:?}", vm_snapshot);
-                        let return_value = &json_return_value["result"]["return_value"];
-                        println!("return_value: {:?}", return_value);
+                        let whole_file: Value = serde_json::from_reader(output_reader).unwrap();
+                        // TODO THIS JSON RETURN VALUE IS WORKING, NEED TO PARSE OUT THE DATA AND SEND THAT BACK
+                        let json_return_value = &whole_file["result"]["vm_snapshot"];
                         println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
