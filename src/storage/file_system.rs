@@ -105,8 +105,8 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             }
         } 
         // Perform the return
-        println!("Returning: {:?}", serde_json::to_string(&json_return_value).unwrap());
-        Ok(serde_json::to_string(&json_return_value).unwrap())
+        //println!("Returning: {:?}", serde_json::to_string(&json_return_value).unwrap());
+        Ok(&json_return_value)
 }
 
 impl FileSystem {
