@@ -250,7 +250,8 @@ impl FileSystem {
 
         // Obtain the current VMSnapshot from the current timestamp dir (if one exists)
         let current_vm_snapshot = get_current_vmsnapshot(output_directory.into_os_string().into_string().unwrap());
-        println!{"Current vm_snapshot: {:?}", current_vm_snapshot};
+        let snapshot_value: Value = serde_json::from_str(&current_vm_snapshot.unwrap()).unwrap();
+        println!{"Current vm_snapshot: {:?}", snapshot_value};
 
         // Bytecode path
         let mut bytecode_path = std::path::PathBuf::from(&self.base_dir);
@@ -276,7 +277,7 @@ impl FileSystem {
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
-        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_types": _return_types, "vm_snapshot": current_vm_snapshot.unwrap()}});
+        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_types": _return_types, "vm_snapshot": snapshot_value}});
         // Convert the input json object to a string for writing to the file
         let input_json_as_string = serde_json::to_string(&input_json);
         // Write the contents to the input json file
