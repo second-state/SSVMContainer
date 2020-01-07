@@ -85,12 +85,13 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                     snapshot_file_path.set_extension("json");
                 // If there is a output.json file with vm_snapshot data it will make up the return value of this function
                     if snapshot_file_path.exists(){
+                        println!("Reading most recent output.json file to obtain vm_snapshot");
                         let snapshot_file_handle = File::open(snapshot_file_path);
                         let output_reader = BufReader::new(snapshot_file_handle.unwrap());
                         let whole_file: Value = serde_json::from_reader(output_reader).unwrap();
                         // TODO THIS JSON RETURN VALUE IS WORKING, NEED TO PARSE OUT THE DATA AND SEND THAT BACK
                         let json_return_value = &whole_file["result"]["vm_snapshot"];
-                        println!("{:?}", serde_json::to_string(&json_return_value).unwrap());
+                        println!("vm_snapshot is as follows: {:?}", serde_json::to_string(&json_return_value).unwrap());
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
 
@@ -103,6 +104,7 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
             }
         } 
         // Perform the return
+        println!("Returning: {:?}", serde_json::to_string(&json_return_value).unwrap());
         Ok(serde_json::to_string(&json_return_value).unwrap())
 }
 
