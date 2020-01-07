@@ -275,7 +275,7 @@ impl FileSystem {
         // Create the contents for the input json file
         let mut service_name: String = String::from("");
         service_name = format!("{}_{}_{}", _uuid, timestamp_value, _function_name);
-        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_types": _return_types, "vm_snapshot": current_vm_snapshot}});
+        let input_json = json!({"service_name": service_name ,"uuid": _uuid,"modules": _modules,"execution": {"function_name": _function_name,"argument": _function_arguments, "argument_types": _argument_types, "return_types": _return_types, "vm_snapshot": current_vm_snapshot.unwrap()}});
         // Convert the input json object to a string for writing to the file
         let input_json_as_string = serde_json::to_string(&input_json);
         // Write the contents to the input json file
