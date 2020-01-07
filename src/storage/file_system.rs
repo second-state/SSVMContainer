@@ -91,7 +91,8 @@ fn get_current_vmsnapshot(_output_dir: String) -> io::Result<String> {
                         let mut whole_file = serde_json::from_reader::<_, serde_json::Value>(output_reader)?;
                         // TODO THIS JSON RETURN VALUE IS WORKING, NEED TO PARSE OUT THE DATA AND SEND THAT BACK
                         json_return_value = serde_json::from_value(whole_file["result"]["vm_snapshot"].take())?;
-                        println!("vm_snapshot is as follows: {:?}", serde_json::to_string(&json_return_value).unwrap());
+                        //println!("vm_snapshot is as follows: {:?}", serde_json::to_string(&json_return_value).unwrap());
+                        println!("vm_snapshot is as follows: {:?}", &json_return_value).unwrap();
                     // TODO Extract the vm_snapshop JSON only
                     // TODO Save that JSON as a return_string
 
