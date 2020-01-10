@@ -1,9 +1,11 @@
 extern crate dirs;
 extern crate rand;
+extern crate subprocess;
+use subprocess::Exec;
 
 use std::{thread, time};
 
-use std::process::Command;
+//use std::process::Command;
 use std::io::{self};
 
 use std::fs;
@@ -285,11 +287,23 @@ impl FileSystem {
         let writer = BufWriter::new(File::create(input_json_path).unwrap());
         serde_json::to_writer_pretty(writer, &input_json).unwrap();
         
-
+        // We are replacing the std::process::Command until the ssvm command line parser becomes available
         // Build the command as a Command object and call SSVM directly
-        Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string()).arg("--output_file").arg(ojp.into_os_string()).arg("--bytecode_file").arg(bp.into_os_string()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
-        println!("SSVM command has been executed, please wait ...");
+        //Command::new("ssvm-proxy").arg("--input_file").arg(ijp.into_os_string()).arg("--output_file").arg(ojp.into_os_string()).arg("--bytecode_file").arg(bp.into_os_string()).spawn().expect("Please ensure that ssvm-proxy is in your system PATH");
+        //println!("SSVM command has been executed, please wait ...");
         
+        // Create the command line string
+        let mut ssvm_command_string = String::from("ssvm_proxy");
+        ssvm_command_string.push_str(" --input_file=");
+        ssvm_command_string.push_str(&ijp.into_os_string().into_string().unwrap());
+        ssvm_command_string.push_str(" --output_file=");
+        ssvm_command_string.push_str(&ojp.into_os_string().into_string().unwrap());
+        ssvm_command_string.push_str(" --wasm_file=");
+        ssvm_command_string.push_str(&bp.into_os_string().into_string().unwrap());
+        println!("Command: {:?}", ssvm_command_string);
+        // Execute the command
+        let exit_status = Exec::shell(ssvm_command_string).join();
+        println!("SSVM Command exit status: {:?}", exit_status);
 
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
