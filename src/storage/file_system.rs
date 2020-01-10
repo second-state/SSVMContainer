@@ -308,8 +308,8 @@ impl FileSystem {
         // Check to see if output has been written
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
             let output_file_handle = File::open(&ojp3);
-            println!("...");
             let output_reader = BufReader::new(output_file_handle.unwrap());
+            println!("...");
             let return_value = serde_json::from_reader(output_reader).unwrap();
             // Return results
             return return_value;
