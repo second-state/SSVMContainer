@@ -293,7 +293,7 @@ impl FileSystem {
         //println!("SSVM command has been executed, please wait ...");
         
         // Create the command line string
-        let mut ssvm_command_string = String::from("ssvm_proxy");
+        let mut ssvm_command_string = String::from("ssvm-proxy");
         ssvm_command_string.push_str(" --input_file=");
         ssvm_command_string.push_str(&ijp.into_os_string().into_string().unwrap());
         ssvm_command_string.push_str(" --output_file=");
