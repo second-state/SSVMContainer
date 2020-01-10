@@ -309,10 +309,12 @@ impl FileSystem {
         if does_file_exist(&ojp2.into_os_string().into_string().unwrap()) == true {
             let output_file_handle = File::open(&ojp3);
             let output_reader = BufReader::new(output_file_handle.unwrap());
-            println!("...");
-            let return_value = serde_json::from_reader(output_reader).unwrap();
+            let return_value = serde_json::from_reader::<_, serde_json::Value>(output_reader);
+            //let return_value = serde_json::from_reader(output_reader).unwrap();
+            //let mut whole_file = serde_json::from_reader::<_, serde_json::Value>(output_reader)?;
             // Return results
-            return return_value;
+            let return_value_as_string = serde_json::to_string(&return_value.unwrap());
+            return return_value_as_string.unwrap();
         } else {
             let error_string: String = String::from("Output file does not exist.");
             return error_string;
