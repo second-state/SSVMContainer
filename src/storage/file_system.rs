@@ -164,10 +164,23 @@ impl FileSystem {
         write_name(&path, _application_name);
         // Extend path 
         path.push("bytecode");
-        path.set_extension("wasm");
+        let mut bytecode_path_no_ext = path.clone();
+        bytecode_path_no_ext.set_extension("wasm");
+        path.set_extension("txt");
         // Create bytecode as file
         let mut file = std::fs::File::create(path.as_path()).unwrap();
         file.write_all(_bytecode_wasm.as_bytes());
+        // Convert the hex dump (passed in by the JSON) to wasm executable format
+        // Create the command line string
+        let mut hex_command_string = String::from("xxd");
+        hex_command_string.push_str(" -r ");
+        hex_command_string.push_str(&path.into_os_string().into_string().unwrap());
+        hex_command_string.push_str(" ");
+        hex_command_string.push_str(&bytecode_path_no_ext.into_os_string().into_string().unwrap());
+        println!("Command: {:?}", hex_command_string);
+        // Execute the command
+        let conversion_status = Exec::shell(hex_command_string).join();
+        println!("Hex conversion command exit status: {:?}", conversion_status);
         // return the uuid
     	let return_value = json!({"response":{"status": "success","application":{"uuid": uuid, "name": _application_name}}});
         let return_value_as_string = serde_json::to_string(&return_value);
