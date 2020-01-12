@@ -173,7 +173,7 @@ impl FileSystem {
         // Convert the hex dump (passed in by the JSON) to wasm executable format
         // Create the command line string
         let mut hex_command_string = String::from("xxd");
-        hex_command_string.push_str(" -r ");
+        hex_command_string.push_str(" -plain -revert ");
         hex_command_string.push_str(&path.into_os_string().into_string().unwrap());
         hex_command_string.push_str(" ");
         hex_command_string.push_str(&bytecode_path_no_ext.into_os_string().into_string().unwrap());
